@@ -16,19 +16,19 @@ COPY . .
 RUN npm run build
 
 ## Use an official Node.js runtime for serving the application
-#FROM node:16-alpine
+FROM node:16-alpine
 #
 ## Set the working directory inside the container
-#WORKDIR /app
+WORKDIR /app
 #
 ## Install serve to serve the built application
-#RUN npm install -g serve
+RUN npm install -g serve
 #
 ## Copy the build folder from the previous stage
-#COPY --from=0 /app/build /app/build
+COPY --from=0 /app/build /app/build
 #
 ## Set the container to listen on port 3000
-#EXPOSE 3000
+EXPOSE 3000
 #
 ## Start the application
-#CMD ["serve", "-s", "build", "-l", "3000"]
+CMD ["serve", "-s", "build", "-l", "3000"]
