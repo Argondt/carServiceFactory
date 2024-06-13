@@ -1,0 +1,18 @@
+version: '3.1'
+
+services:
+  car_rent_fe:
+    build:
+      context: ./car_rent_fe/
+      dockerfile: Dockerfile
+    ports:
+      - "8118:8030"
+    restart: always
+
+  car-factory-service:
+    build:
+      context: ./carFactoryService/
+      dockerfile: Dockerfile
+    ports:
+      - "8119:8130"
+    restart: always

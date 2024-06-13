@@ -1,0 +1,129 @@
+/*.rbc-header {*/
+/*    color: white;*/
+/*    font-size: 14px !important;*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    justify-content: center;*/
+/*    height: 36px !important;*/
+/*    background: #17405d;*/
+/*}*/
+
+/*.rbc-allday-cell {*/
+/*    display: none;*/
+/*}*/
+
+/*.rbc-time-header-cell .rbc-today {*/
+/*    background-color: #04aa6d !important;*/
+/*    height: 40px !important;*/
+/*}*/
+/*.rbc-time-gutter .rbc-time-column{*/
+/*    height: 40px !important;*/
+
+/*}*/
+
+/*.rbc-time-slot {*/
+/*    color: #350101;*/
+/*    z-index: 1;*/
+/*    height: 100px !important;*/
+
+/*}*/
+
+/*.rbc-time-slot:not(.rbc-today .rbc-time-slot) {*/
+/*    background-color: #eff4f7;*/
+/*}*/
+
+/*!*Event Styles*!*/
+/*.rbc-event,*/
+/*.rbc-background-event {*/
+/*    z-index: 2;*/
+/*    padding: 0px !important;*/
+/*    border: none !important;*/
+/*}*/
+
+/*.rbc-event-label {*/
+/*    display: none !important;*/
+/*}*/
+
+/*.rbc-events-container {*/
+/*    width: 100% !important;*/
+/*}*/
+/*.rbc-event-content {*/
+/*    line-height: 2; !* Adjust this value as needed *!*/
+/*}*/
+
+/*!*Timeslots Customization*!*/
+/*.rbc-day-slot .rbc-time-slot:after {*/
+/*    content: "";*/
+/*    width: 100%;*/
+/*    border-top: 1px solid #000000;*/
+/*    display: block;*/
+
+/*}*/
+/* General header styles */
+.rbc-header {
+    color: white;
+    font-size: 14px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px !important;
+    background: #17405d;
+}
+
+/* Hide all-day events row */
+.rbc-allday-cell {
+    display: none;
+}
+
+/* Styles for the current day in the time header */
+.rbc-time-header-cell .rbc-today {
+    background-color: #04aa6d !important;
+    height: 40px !important;
+}
+
+/* Styles for the gutter (time indicators on the side) */
+.rbc-time-gutter .rbc-time-column {
+    height: 1000px !important;
+}
+
+/* Increased slot height */
+.rbc-time-slot {
+    color: #350101;
+    z-index: 1;
+    height: 1000px !important; /* Height of time slots */
+}
+
+/* Different background for non-today slots */
+.rbc-time-slot:not(.rbc-today .rbc-time-slot) {
+    background-color: #eff4f7;
+}
+
+/* Event styles */
+.rbc-event,
+.rbc-background-event {
+    z-index: 2;
+    padding: 0px !important;
+    border: none !important;
+}
+
+/* Hide event labels */
+.rbc-event-label {
+    display: none !important;
+}
+
+/* Full width for events container */
+.rbc-events-container {
+    width: 100% !important;
+}
+
+/* Adjust line height for content inside events */
+.rbc-event-content {
+    line-height: 2; /* Adjust this value as needed */
+}
+
+/* Lines after slots, making them thicker */
+.rbc-time-slot:after {
+    width: 100%;
+    border-top: 2px solid #e10404; /* Thick line for slot separation */
+    display: block;
+}
