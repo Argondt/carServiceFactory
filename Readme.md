@@ -19,13 +19,13 @@ CarService to aplikacja internetowa stworzona w celu zarządzania usługami serw
 
 ### Profil pracownika
 - **Wyświetlanie danych użytkownika**: Pracownik może przeglądać swoje dane.
-- **Edycja danych osobowych**: Możliwość zmiany danych osobowych oraz oferowanych usług.
+- **Edycja danych osobowych**: Możliwość zmiany danych osobowych.
 - **Historia wizyt klientów**: Dostęp do historii wizyt poszczególnych klientów.
-- **Ustawianie godzin pracy**: Pracownik może ustawiać swoje godziny pracy oraz terminy nieobecności.
+- **Ustawianie godzin pracy**: Pracownik może ustawiać terminy nieobecności.
 - **Notatki do wizyt**: Pracownik może dodawać notatki do wizyt, które są niewidoczne dla klientów.
 - **Umawianie wizyt**: Pracownik musi najpierw znaleźć klienta w bazie lub dodać nowego, a potem umówić go na wizytę serwisową.
 
 ### Profil administratora
 - **Funkcje pracownika**: Administrator ma dostęp do wszystkich funkcji dostępnych dla pracowników.
-- **Zarządzanie usługami**: Możliwość dodawania i usuwania usług serwisowych.
+- **Zarządzanie usługami**: Możliwość dodawania.
 - **Zarządzanie kontami**: Administrator może zarządzać kontami użytkowników.
