@@ -130,11 +130,6 @@ export const AppointmentDetailsView = ({id}: AppointmentProps) => {
                             <Grid item xs={12}>
                                 <Card elevation={0} variant="outlined">
                                     <CardContent sx={{border: '2px solid', borderColor: 'primary.main', p: 2}}>
-                                        <Typography variant="subtitle1" gutterBottom>Treść notatki</Typography>
-                                        <Typography variant="body1" style={{
-                                            fontWeight: 'bold',
-                                            color: 'primary.main'
-                                        }}>{futureVisits?.note}</Typography>
 
                                         <Typography variant="subtitle1" gutterBottom sx={{mt: 2}}>Dodaj
                                             notatkę</Typography>
@@ -145,10 +140,12 @@ export const AppointmentDetailsView = ({id}: AppointmentProps) => {
                                             label="Wprowadź notatkę"
                                             id="notatka"
                                             name="notatka"
+                                            defaultValue={futureVisits?.note}
                                             onChange={(e) => setNotes(e.target.value)}
                                             rows={4}
                                         />
-                                        <Button variant="contained" color="primary" sx={{mt: 2}}>
+                                        <Button variant="contained" color="primary" sx={{mt: 2}}
+                                                onClick={fetchClickClient}>
                                             Edytuj notatkę
                                         </Button>
                                     </CardContent>

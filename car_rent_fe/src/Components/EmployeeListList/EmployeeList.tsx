@@ -21,10 +21,10 @@ export const EmployeeList = () => {
     const { data: users1, isLoading, isError, error } = useQuery({ queryKey: ['employees'], queryFn: () => apiService.getEployees() });
 
     if (isLoading) {
-        return <div>Loading...</div>;
+        return <div>Ładowanie...</div>;
     }
     if (isError) {
-        return <div>Error: {(error as Error).message}</div>;
+        return <div>Błąd: {(error as Error).message}</div>;
     }
 
     const filteredCustomers = users1?.content?.filter((customer) =>
@@ -37,7 +37,7 @@ export const EmployeeList = () => {
         <TableContainer component={Paper}>
             <CustomerRegisterForm />
             <TextField
-                label="Search"
+                label="Szukaj"
                 variant="outlined"
                 fullWidth
                 margin="normal"
@@ -48,10 +48,10 @@ export const EmployeeList = () => {
                 <TableHead>
                     <TableRow>
                         <TableCell>ID</TableCell>
-                        <TableCell>First Name</TableCell>
-                        <TableCell>Last Name</TableCell>
-                        <TableCell>Phone Number</TableCell>
-                        <TableCell>Actions</TableCell>
+                        <TableCell>Imię</TableCell>
+                        <TableCell>Nazwisko</TableCell>
+                        <TableCell>Numer telefonu</TableCell>
+                        <TableCell>Akcje</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -63,7 +63,7 @@ export const EmployeeList = () => {
                             <TableCell>{customer.phoneNumber}</TableCell>
                             <TableCell>
                                 <Button variant="contained" onClick={() => navigate(`/appointmentClientsVisit/${customer.id}`)}>
-                                    Click
+                                    Zobacz
                                 </Button>
                             </TableCell>
                         </TableRow>

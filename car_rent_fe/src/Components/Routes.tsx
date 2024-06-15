@@ -12,6 +12,7 @@ import {AppointmentClientVisit} from "./Appointments/AppointmentClientVisit";
 import {AppointmentClientVisitCustomer} from "./Appointments/AppointmentClientVisitCustomer";
 import ReservationVisitCustomer from "./Visits/ReservationVisitCustomer";
 import {EmployeeList} from "./EmployeeListList/EmployeeList";
+import {EmployeeDetails} from "./EmployeeListList/EmployeeDetailss";
 
 export const router = createBrowserRouter([
     {
@@ -30,6 +31,7 @@ export const router = createBrowserRouter([
             {path: "appointmentClientVisitCustomer", element: <AppointmentClientVisitCustomer/>},
             {path: "customers", element: <CustomerList/>},
             {path: "employees", element: <EmployeeList/>},
+            {path: "employeeDetails/:id", element: <EmployeeDetails/>},
             //     {path: "projekty/:id", element: <KanbanBoard/>},
             //     {path: "projekty/:id", element: <KanbanBoard/>}
         ],

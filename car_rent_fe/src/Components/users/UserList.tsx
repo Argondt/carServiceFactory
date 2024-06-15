@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
     Box,
     Card,
@@ -11,49 +11,38 @@ import {
     TableHead,
     TableRow,
     TablePagination,
-    IconButton, Chip
+    IconButton,
+    Chip,
+    TextField,
+    Button
 } from '@mui/material';
-import {Role, User} from "./User";
-import {useNavigate} from "react-router";
+import { useNavigate } from "react-router";
 import SearchIcon from '@mui/icons-material/Search';
-import {useQuery} from "@tanstack/react-query";
-import {apiService} from "../ApiService";
-import {UserRegisterEmployeeForm} from "./UserRegisterEmployeeForm";
+import { useQuery } from "@tanstack/react-query";
+import { apiService } from "../ApiService";
+import { UserRegisterEmployeeForm } from "./UserRegisterEmployeeForm";
+import {User} from "./User";
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
-type Props = {};
-
-
-const UserList: React.FC<Props> = () => {
+const UserList = () => {
     const navigate = useNavigate();
-
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
     const [isUpdateFormOpen, setIsUpdateFormOpen] = useState(false);
-    const [selectedUser, setSelectedUser] = useState<User | null>(null);
+    const [selectedUser, setSelectedUser] = useState(null);
+    const [searchTerm, setSearchTerm] = useState('');
     const [users, setUsers] = useState<User[]>([]);
 
+    const { data: users1, isLoading, isError, error } = useQuery({
+        queryKey: ['user'],
+        queryFn: () => apiService.getUsers()
+    });
 
-    const {
-        data: users1,
-        isLoading,
-        isError,
-        error,
-    } = useQuery({queryKey: ['user'], queryFn: () => apiService.getUsers()})
-
-
-    const handleChangePage = (event: unknown, newPage: number) => {
+    const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
-    const handleEditClick = (user: User) => {
-        setSelectedUser(user);
-        setIsUpdateFormOpen(true);
-    };
-
-    const handleCloseUpdateForm = () => {
-        setIsUpdateFormOpen(false);
-        setSelectedUser(null);
-    };
-    // Handle change rows per page
+// Handle change rows per page
     const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
         setRowsPerPage(+event.target.value);
         setPage(0);
@@ -72,17 +61,34 @@ const UserList: React.FC<Props> = () => {
         const updatedUsers = users.filter(user => user.id !== userId);
         setUsers(updatedUsers);
     };
-    const handleUserClick = (id: any) => {
-        navigate(`/users/${id}`); // Przekierowanie do szczegółowej strony
+
+    const handleUserClick = (id) => {
+        navigate(`/users/${id}`);
     };
-    const rolesToRemove = ["default-roles-studia", "offline_access","uma_authorization"];
+
+    const rolesToRemove = ["default-roles-studia", "offline_access", "uma_authorization"];
+
+    const filteredUsers = users1?.filter((user) =>
+        user.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.email.toLowerCase().includes(searchTerm.toLowerCase())
+    ) || [];
+
     return (
-        <Card sx={{margin: 4}}>
+        <Card sx={{ margin: 4 }}>
             <CardContent>
                 <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-                    <UserRegisterEmployeeForm/>
+                    <UserRegisterEmployeeForm />
                     <Typography variant="h5">Lista użytkowników</Typography>
                 </Box>
+                <TextField
+                    label="Szukaj"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
                 <TableContainer>
                     <Table>
                         <TableHead>
@@ -94,32 +100,30 @@ const UserList: React.FC<Props> = () => {
                                 <TableCell></TableCell>
                             </TableRow>
                         </TableHead>
-
                         <TableBody>
-                            {Array.isArray(users1) && users1.map((user, index) => (
+                            {Array.isArray(filteredUsers) && filteredUsers.map((user, index) => (
                                 <TableRow key={user.id}>
                                     <TableCell>{index + 1}</TableCell>
                                     <TableCell>{user.firstName} {user.lastName}</TableCell>
                                     <TableCell>{user.email}</TableCell>
                                     <TableCell>
-
                                         <div>
                                             {user.roles
                                                 .flatMap(roleString => roleString.replace(/\[|\]/g, '').split(', '))
-                                                .filter((role: string) => !rolesToRemove.includes(role))
-                                                .map((role: string, index: number) => (
-                                                    <Chip key={index} label={role}
-                                                          style={{marginRight: '5px', marginBottom: '5px'}}/>
+                                                .filter((role) => !rolesToRemove.includes(role))
+                                                .map((role, index) => (
+                                                    <Chip key={index} label={role} style={{ marginRight: '5px', marginBottom: '5px' }} />
                                                 ))}
                                         </div>
-
-
                                     </TableCell>
                                     <TableCell>
                                         <IconButton color="primary" onClick={() => handleUserClick(user.id)}>
-                                            <SearchIcon/>
+                                            <SearchIcon />
                                         </IconButton>
 
+                                        <IconButton color="error" onClick={() => handleDeleteClick(user.id)}>
+                                            <DeleteIcon/>
+                                        </IconButton>
                                     </TableCell>
                                 </TableRow>
                             ))}
@@ -129,7 +133,7 @@ const UserList: React.FC<Props> = () => {
                 <TablePagination
                     rowsPerPageOptions={[5, 10, 25]}
                     component="div"
-                    count={users?.length || 0}
+                    count={filteredUsers?.length || 0}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     onPageChange={handleChangePage}

@@ -1,38 +1,27 @@
 import {
-    Box,
-    Button, Card, CardContent, Container, Dialog, DialogTitle,
+    Button, Dialog, DialogTitle,
     FormControl,
-    Grid,
     InputLabel, MenuItem,
-    Select, Stack, TextField, Typography, DialogActions, DialogContent, Alert, AlertTitle,
+    Select, DialogActions, DialogContent, Alert, AlertTitle,
 } from '@mui/material';
-import React, {useState} from 'react';
-import {AvailableDate} from "../../MOdel/ServiceBeuaty";
-import {useQuery} from "@tanstack/react-query";
-import {apiService} from "../ApiService";
-import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
-import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider/LocalizationProvider';
-import {DatePicker, DateTimePicker, StaticTimePicker, TimePicker} from "@mui/x-date-pickers";
-import {Dayjs} from "dayjs";
-import {AppointmentDetails} from "../../MOdel/AppointmetsModel";
-import {getUserId} from "../../keycloak";
-import {EmployeeUserDto} from "../CustomerList/Customers";
+import React, { useState } from 'react';
+import { useQuery } from "@tanstack/react-query";
+import { apiService } from "../ApiService";
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider/LocalizationProvider';
+import { DatePicker, StaticTimePicker } from "@mui/x-date-pickers";
+import { Dayjs } from "dayjs";
+import { getUserId } from "../../keycloak";
+import { EmployeeUserDto } from "../CustomerList/Customers";
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
-
 interface AbsenceProps {
     // Define additional props here if needed
 }
 
-
 const Absence: React.FC<AbsenceProps> = () => {
-    const [selectedDate, setSelectedDate] = React.useState<Dayjs | null>();
+    const [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
     const [selectedTime, setSelectedTime] = useState<Date | null>(new Date());
     const [servicesTestHOURS, setServicesTestHOURS] = useState<string>('');
-    const [numberClient, setNumberClient] = useState('')
-    const [selectedHours, setSelectedHours] = useState<{ [key: number]: string }>({});
-    const [selectedId, setSelectedId] = useState('')
-    const [selectedIdEmployee, setSelectedIdEmployee] = useState<number>()
-    const [selectedHour, setSelectedHour] = useState('')
     const [open, setOpen] = useState<boolean>(false);
 
     function convertToDDMMYYYY(dateInput: any) {
@@ -44,11 +33,13 @@ const Absence: React.FC<AbsenceProps> = () => {
 
         return `${year}-${month}-${day}`;
     }
+
     const formatHour = (date: Date | null): string => {
         if (!date) return '';
         const hours = date.getHours();
         return `0${hours}:00:00`;
     };
+
     const id = getUserId();
 
     const {
@@ -60,6 +51,7 @@ const Absence: React.FC<AbsenceProps> = () => {
         queryKey: ['getEmployeeByUserId'],
         queryFn: () => apiService.getEmployeeByUserId(id)
     });
+
     if (isLoading) {
         return <div>Ładowanie...</div>;
     }
@@ -78,7 +70,7 @@ const Absence: React.FC<AbsenceProps> = () => {
     }
 
     const addReservation = async (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault()
+        e.preventDefault();
         const appointmentnew = {
             employee: {
                 id: futureVisits?.id,
@@ -87,15 +79,14 @@ const Absence: React.FC<AbsenceProps> = () => {
             duration: `${servicesTestHOURS}`,
             time: `${formatHour(selectedTime)}`,
             status: 'ABSENCE',
-        }
+        };
         try {
             const response = await apiService.addAbsence(appointmentnew);
-
         } catch (error) {
             console.error("Błąd pobierania dostępnych dat:", error);
         }
+    };
 
-    }
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -105,7 +96,6 @@ const Absence: React.FC<AbsenceProps> = () => {
     };
 
     return (
-
         <div>
             <Button variant="outlined" onClick={handleClickOpen}>
                 Dodaj nieobecność
@@ -114,31 +104,27 @@ const Absence: React.FC<AbsenceProps> = () => {
                 <DialogTitle>Dodaj nieobecność</DialogTitle>
                 <DialogContent>
                     <form>
-                        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en-gb">
+                        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pl">
                             <DatePicker
                                 label="Data"
                                 value={selectedDate}
                                 onChange={(newValue) => setSelectedDate(newValue)}
                             />
-
-
                         </LocalizationProvider>
-                        <LocalizationProvider dateAdapter={AdapterDateFns} >
+                        <LocalizationProvider dateAdapter={AdapterDateFns}>
                             <StaticTimePicker
                                 className='input'
                                 onChange={(time) => setSelectedTime(time)}
                                 value={selectedTime}
                             />
                         </LocalizationProvider>
-
-
                         <FormControl fullWidth>
-                            <InputLabel id="duration-label">Duration</InputLabel>
+                            <InputLabel id="duration-label">Czas trwania</InputLabel>
                             <Select
                                 labelId="duration-label"
                                 id="duration-select"
                                 value={servicesTestHOURS}
-                                label="Duration"
+                                label="Czas trwania"
                                 onChange={(e) => setServicesTestHOURS(e.target.value as string)}
                             >
                                 <MenuItem value={'PT1H'}>1 h</MenuItem>
@@ -157,7 +143,7 @@ const Absence: React.FC<AbsenceProps> = () => {
                     </form>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}>Cancel</Button>
+                    <Button onClick={handleClose}>Anuluj</Button>
                 </DialogActions>
             </Dialog>
         </div>

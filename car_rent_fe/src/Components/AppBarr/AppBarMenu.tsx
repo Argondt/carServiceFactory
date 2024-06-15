@@ -78,6 +78,16 @@ export const AppBarMenu = () => {
                         component={Link}
                         startIcon={<PeopleIcon/>}
                         style={{border: 'none', color: "#a2836e", marginLeft: "10px"}}
+                        to="/employees" // Ścieżka do UserList
+                    >
+                        Lista pracowników
+                    </Button>)}
+                {isAuthorized([Role.ADMIN]) && (
+                    <Button
+                        variant="outlined"
+                        component={Link}
+                        startIcon={<PeopleIcon/>}
+                        style={{border: 'none', color: "#a2836e", marginLeft: "10px"}}
                         to="/users" // Ścieżka do UserList
                     >
                         Użytkownicy

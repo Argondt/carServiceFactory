@@ -10,37 +10,7 @@ import {StatusChip} from "./StatusChip";
 export const AppointmentClientVisit = () => {
     const {id} = useParams<{ id: string }>();
     const navigate = useNavigate();
-    const token = localStorage.getItem('token');
-    // const {
-    //         data: clientAppointments,
-    //         isLoading: isLoadingClientAppointments,
-    //         isError: isErrorClientAppointments,
-    //         error
-    //     } = useQuery<Appointment[], Error>({
-    //         queryKey: ['clientAppointments', id],
-    //         queryFn: () => apiService.getClientAppointmentsAppointmentsById(id)
-    //
-    //     })
-    // ;
-
-    // const {
-    //     data: historyAppointments,
-    //     isLoading: isLoadingHistoryAppointments,
-    //     isError: isErrorHistoryAppointments,
-    // } = useQuery<Appointment[], Error>(['historyAppointments', id], () => fetchAppointments(`http://localhost:8081/api/v1/historyAppointments/${id}`, token));
-
-    const changeStatus = (status: string) => {
-        switch (status) {
-            case 'APPOINTED':
-                return 'Umówiona';
-            case 'DONE':
-                return 'Zrealizowana';
-            case 'REJECTED':
-                return 'Anulowana';
-            default:
-                return '';
-        }
-    };
+    localStorage.getItem('token');
     const {
         data: clientAppointments,
         isLoading: isLoadingClientAppointments,
