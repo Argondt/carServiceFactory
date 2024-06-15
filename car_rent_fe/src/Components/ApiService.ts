@@ -7,7 +7,7 @@ import {CustomerDto, EmployeeDto} from "./CustomerList/Customers";
 import {enqueueSnackbar, useSnackbar} from "notistack";
 
 const api = axios.create({
-    baseURL: process.env.BE_URL || 'https://api.zwinne.awieczarek.pl/api/v1',
+    baseURL: process.env.BE_URL || 'http://localhost:8119/api/v1',
     headers: {
         'Content-Type': 'application/json',
     },
