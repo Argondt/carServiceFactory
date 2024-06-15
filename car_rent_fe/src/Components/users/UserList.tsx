@@ -39,7 +39,7 @@ const UserList = () => {
         queryFn: () => apiService.getUsers()
     });
 
-    const handleChangePage = (event, newPage) => {
+    const handleChangePage = (event:any, newPage:any) => {
         setPage(newPage);
     };
 // Handle change rows per page
@@ -62,7 +62,7 @@ const UserList = () => {
         setUsers(updatedUsers);
     };
 
-    const handleUserClick = (id) => {
+    const handleUserClick = (id:any) => {
         navigate(`/users/${id}`);
     };
 
