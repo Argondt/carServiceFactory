@@ -33,6 +33,9 @@ public class ServiceServiceImpl implements ServiceService {
         ServiceBeuaty savedServiceBeuaty = serviceRepository.save(serviceBeuaty);
         return Optional.of(savedServiceBeuaty);
     }
-
+    @Override
+    public void deleteById(Long id) {
+        serviceRepository.deleteById(id);
+    }
 
 }

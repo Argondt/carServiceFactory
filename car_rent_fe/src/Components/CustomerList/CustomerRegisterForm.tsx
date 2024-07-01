@@ -4,10 +4,12 @@ import { apiService } from "../ApiService";
 import { CustomerDto } from "../CustomerList/Customers";
 import { UserRegisterDto } from "../users/User";
 import { useQueryClient } from "@tanstack/react-query";
+import { useSnackbar } from 'notistack';
 
 export const CustomerRegisterForm = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const queryClient = useQueryClient();
+    const { enqueueSnackbar } = useSnackbar();
 
     const [formData, setFormData] = useState<UserRegisterDto>({
         username: '',
@@ -26,22 +28,58 @@ export const CustomerRegisterForm = () => {
         });
     };
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const validateEmail = (email: string): boolean => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    };
+
+    const validatePhoneNumber = (phoneNumber: string): boolean => {
+        const phoneRegex = /^\d{9,15}$/;
+        return phoneRegex.test(phoneNumber);
+    };
+
+    const validateForm = (): boolean => {
+        if (!formData.username || !formData.firstName || !formData.lastName || !formData.phoneNumber || !formData.email) {
+            enqueueSnackbar('Wszystkie pola są wymagane', { variant: 'error' });
+            return false;
+        }
+
+        if (!validateEmail(formData.email)) {
+            enqueueSnackbar('Proszę wprowadzić poprawny adres e-mail', { variant: 'error' });
+            return false;
+        }
+
+        if (!validatePhoneNumber(formData.phoneNumber)) {
+            enqueueSnackbar('Proszę wprowadzić poprawny numer telefonu', { variant: 'error' });
+            return false;
+        }
+
+        return true;
+    };
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+
+        if (!validateForm()) {
+            return;
+        }
+
         const formData1: CustomerDto = {
             firstName: formData.firstName,
             lastName: formData.lastName,
             phoneNumber: formData.phoneNumber,
             email: formData.email
         };
-        apiService.addUser(formData).then(
-            value => {
-                apiService.addCustomer(formData1).then(value1 =>
-                    queryClient.invalidateQueries({ queryKey: ['customers'], type: 'active' })
-                );
-            }
-        )
-        setDrawerOpen(false);
+
+        try {
+            await apiService.addUser(formData);
+            await apiService.addCustomer(formData1);
+            queryClient.invalidateQueries({ queryKey: ['customers'], type: 'active' });
+            enqueueSnackbar('Użytkownik został pomyślnie zarejestrowany', { variant: 'success' });
+            setDrawerOpen(false);
+        } catch (error) {
+            enqueueSnackbar('Wystąpił błąd podczas rejestracji użytkownika', { variant: 'error' });
+        }
     };
 
     return (
@@ -67,6 +105,9 @@ export const CustomerRegisterForm = () => {
                             onChange={handleInputChange}
                             fullWidth
                             margin="normal"
+                            required
+                            error={!formData.username}
+                            helperText={!formData.username && 'To pole jest wymagane'}
                         />
                         <TextField
                             label="Imię"
@@ -75,6 +116,9 @@ export const CustomerRegisterForm = () => {
                             onChange={handleInputChange}
                             fullWidth
                             margin="normal"
+                            required
+                            error={!formData.firstName}
+                            helperText={!formData.firstName && 'To pole jest wymagane'}
                         />
                         <TextField
                             label="Nazwisko"
@@ -83,6 +127,9 @@ export const CustomerRegisterForm = () => {
                             onChange={handleInputChange}
                             fullWidth
                             margin="normal"
+                            required
+                            error={!formData.lastName}
+                            helperText={!formData.lastName && 'To pole jest wymagane'}
                         />
                         <TextField
                             label="Numer telefonu"
@@ -91,6 +138,9 @@ export const CustomerRegisterForm = () => {
                             onChange={handleInputChange}
                             fullWidth
                             margin="normal"
+                            required
+                            error={!validatePhoneNumber(formData.phoneNumber)}
+                            helperText={!validatePhoneNumber(formData.phoneNumber) ? 'Proszę wprowadzić poprawny numer telefonu' : ''}
                         />
                         <TextField
                             label="Email"
@@ -99,6 +149,9 @@ export const CustomerRegisterForm = () => {
                             onChange={handleInputChange}
                             fullWidth
                             margin="normal"
+                            required
+                            error={!validateEmail(formData.email)}
+                            helperText={!validateEmail(formData.email) ? 'Proszę wprowadzić poprawny adres e-mail' : ''}
                         />
                         <Button type="submit" variant="contained" color="primary" fullWidth>
                             Zarejestruj

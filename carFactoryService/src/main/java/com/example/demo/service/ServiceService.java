@@ -15,5 +15,5 @@ public interface ServiceService {
     Optional<ServiceBeuaty> getService(Long id);
 
     Optional<ServiceBeuaty> addService(ServiceBeuaty serviceBeuaty);
-
+    void deleteById(Long id);
 }

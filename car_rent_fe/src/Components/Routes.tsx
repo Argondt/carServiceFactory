@@ -13,6 +13,8 @@ import {AppointmentClientVisitCustomer} from "./Appointments/AppointmentClientVi
 import ReservationVisitCustomer from "./Visits/ReservationVisitCustomer";
 import {EmployeeList} from "./EmployeeListList/EmployeeList";
 import {EmployeeDetails} from "./EmployeeListList/EmployeeDetailss";
+import DictionaryList from "./DictionaryList/DictionaryList";
+import {DetailsDictionary} from "./DictionaryList/DetailsDictionary";
 
 export const router = createBrowserRouter([
     {
@@ -22,7 +24,8 @@ export const router = createBrowserRouter([
             {path: "", element: <CalendarView/>},
             {path: "reservation", element: <ReservationVisit/>},
             {path: "reservationCustomer", element: <ReservationVisitCustomer/>},
-            {path: "service", element: <AddServiceForm/>},
+            {path: "service", element: <DictionaryList/>},
+            {path: "service/:name", element: <DetailsDictionary/>},
             {path: "users", element: <UserList/>},
             {path: "users/:id", element: <UserDetailsView/>},
             {path: "calendar", element: <CalendarView/>},
@@ -32,8 +35,6 @@ export const router = createBrowserRouter([
             {path: "customers", element: <CustomerList/>},
             {path: "employees", element: <EmployeeList/>},
             {path: "employeeDetails/:id", element: <EmployeeDetails/>},
-            //     {path: "projekty/:id", element: <KanbanBoard/>},
-            //     {path: "projekty/:id", element: <KanbanBoard/>}
         ],
     },
 ]);

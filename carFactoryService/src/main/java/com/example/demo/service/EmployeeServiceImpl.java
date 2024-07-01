@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.Employee;
 import com.example.demo.model.ServiceBeuaty;
 import com.example.demo.model.dto.EmployeeDTO;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -83,4 +86,19 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
     }
 
+    @Override
+    public Employee addServiceBeuatyToEmployee(Long employeeId, Set<Long> serviceBeuatyIds) {
+        Employee employee = employeeRepository.findById(employeeId).orElseThrow();
+        Set<ServiceBeuaty> serviceBeuaties = new HashSet<>(serviceRepository.findAllById(serviceBeuatyIds));
+        employee.getServiceBeuaties().addAll(serviceBeuaties);
+        return employeeRepository.save(employee);
+    }
+
+    @Override
+    public Employee removeServiceBeuatyFromEmployee(Long employeeId, Set<Long> serviceBeuatyIds) {
+        Employee employee = employeeRepository.findById(employeeId).orElseThrow();
+        Set<ServiceBeuaty> serviceBeuaties = new HashSet<>(serviceRepository.findAllById(serviceBeuatyIds));
+        employee.getServiceBeuaties().removeAll(serviceBeuaties);
+        return employeeRepository.save(employee);
+    }
 }

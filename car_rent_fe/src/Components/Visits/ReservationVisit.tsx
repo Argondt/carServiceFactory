@@ -15,6 +15,7 @@ import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider/Loc
 import {DatePicker} from "@mui/x-date-pickers";
 import {Dayjs} from "dayjs";
 import {UserRegisterForm} from "../users/UserRegisterForm";
+import {enqueueSnackbar} from "notistack";
 
 // import any = jasmine.any;
 
@@ -73,8 +74,10 @@ const ReservationVisit = () => {
         try {
             const response = await apiService.getAvailableDates(selectedId, convertToDDMMYYYY(selectedDate));
             setServiceDates(response);
+            enqueueSnackbar('Dostępne daty zostały pobrane pomyślnie', { variant: 'success' });
         } catch (error) {
             console.error("Error fetching available dates:", error);
+            enqueueSnackbar('Wystąpił błąd przy pobieraniu dostępnych dat', { variant: 'error' });
         }
     };
     const [customerNotFound, setCustomerNotFound] = useState(false);
@@ -86,20 +89,18 @@ const ReservationVisit = () => {
             const response = await apiService.searchCustomerByNumber(numberClient);
             if (!response.id) {
                 setCustomerNotFound(true);
-                setSnackbarMessage("Customer not found, please add.");
-                setSnackbarOpen(true);
+                enqueueSnackbar("Nie znaleziono klienta, proszę dodać.", { variant: 'warning' });
             } else {
                 setCustomerNotFound(false);
-                setSnackbarMessage("Customer found.");
-                setSnackbarOpen(true);
-                setInputDisabled(true); // Disable input after successful registration
+                enqueueSnackbar("Znaleziono klienta.", { variant: 'success' });
+                setInputDisabled(true);
                 setSearchButtonVisible(true);
             }
         } catch (error) {
             setCustomerNotFound(true);
             setDrawerOpen(true);
-
             console.error("Error fetching customer:", error);
+            enqueueSnackbar('Wystąpił błąd przy wyszukiwaniu klienta', { variant: 'error' });
         }
     };
 
@@ -132,23 +133,23 @@ const ReservationVisit = () => {
         setHourSelected(Object.values({...selectedHours, [employeeId]: selectedHour}).some(h => h !== ''));
     };
     const addReservation = async (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault()
+        e.preventDefault();
         const appointmentnew = {
-
             customerId: numberClient,
             employeeId: selectedIdEmployee,
             serviceId: selectedId,
             date: convertToDDMMYYYY(selectedDate),
             time: selectedHour,
-            appointmentStatus:"APPOINTED"
-        }
+            appointmentStatus: "APPOINTED"
+        };
         try {
-            const response = await apiService.addNewAppointment(appointmentnew);
+            await apiService.addNewAppointment(appointmentnew);
+            enqueueSnackbar('Rezerwacja została dodana pomyślnie', { variant: 'success' });
         } catch (error) {
-            console.error("Error fetching available dates:", error);
+            console.error("Error adding reservation:", error);
+            enqueueSnackbar('Wystąpił błąd przy dodawaniu rezerwacji', { variant: 'error' });
         }
-
-    }
+    };
     const handleUserRegistrationClose = (isRegistered: boolean) => {
         if (isRegistered) {
             setCustomerNotFound(false);

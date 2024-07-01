@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
+import java.util.Set;
 
 
 @RestController
@@ -48,6 +49,17 @@ public class EmployeeController {
     @PostMapping("/{employeeId}/services/{serviceId}")
     public Employee assignServiceToEmployee(@PathVariable Long employeeId, @PathVariable Long serviceId) {
         return employeeService.assignServiceToEmployee(employeeId, serviceId);
+    }
+    @PostMapping("/{employeeId}/serviceBeuaties")
+    public ResponseEntity<Employee> addServiceBeuatyToEmployee(@PathVariable Long employeeId, @RequestBody Set<Long> serviceBeuatyIds) {
+        Employee updatedEmployee = employeeService.addServiceBeuatyToEmployee(employeeId, serviceBeuatyIds);
+        return ResponseEntity.ok(updatedEmployee);
+    }
+
+    @DeleteMapping("/{employeeId}/serviceBeuaties")
+    public ResponseEntity<Employee> removeServiceBeuatyFromEmployee(@PathVariable Long employeeId, @RequestBody Set<Long> serviceBeuatyIds) {
+        Employee updatedEmployee = employeeService.removeServiceBeuatyFromEmployee(employeeId, serviceBeuatyIds);
+        return ResponseEntity.ok(updatedEmployee);
     }
 
 }

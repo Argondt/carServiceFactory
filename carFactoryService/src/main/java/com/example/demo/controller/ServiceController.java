@@ -30,6 +30,9 @@ public class ServiceController {
     public ResponseEntity<ServiceBeuaty> addNewService(@RequestBody ServiceBeuaty serviceBeuaty) {
         return ResponseEntity.of(serviceService.addService(serviceBeuaty));
     }
-
+    @DeleteMapping("/{id}")
+    public void deleteServiceBeauty(@PathVariable Long id) {
+        serviceService.deleteById(id);
+    }
 
 }

@@ -62,7 +62,7 @@ export const EmployeeList = () => {
                             <TableCell>{customer.lastName}</TableCell>
                             <TableCell>{customer.phoneNumber}</TableCell>
                             <TableCell>
-                                <Button variant="contained" onClick={() => navigate(`/appointmentClientsVisit/${customer.id}`)}>
+                                <Button variant="contained" onClick={() => navigate(`/employeeDetails/${customer.id}`)}>
                                     Zobacz
                                 </Button>
                             </TableCell>

@@ -5,6 +5,7 @@ import {User, UserRegisterDto} from "./users/User";
 import {AppointmentDetails, CustomersResponse, EmployeesResponse} from "../MOdel/AppointmetsModel";
 import {CustomerDto, EmployeeDto} from "./CustomerList/Customers";
 import {enqueueSnackbar, useSnackbar} from "notistack";
+import DictionaryList, {Dictionary} from "./DictionaryList/DictionaryList";
 
 const api = axios.create({
     baseURL: process.env.BE_URL || 'http://localhost:8119/api/v1',
@@ -171,6 +172,16 @@ const assignService = async (employeeId: any, serviceDto: any) => {
     const response = await api.put(`/employees/${employeeId}`, serviceDto);
     return response.data
 }
+const addServiceBeuatyToEmployee = (employeeId: number, serviceBeuatyIds: number[]) => {
+    return api.post(`/employees/${employeeId}/serviceBeuaties`, serviceBeuatyIds);
+};
+const removeServiceBeuatyFromEmployee = (employeeId: number, serviceBeuatyIds: number[]) => {
+    return api.delete(`/employees/${employeeId}/serviceBeuaties`, {data: serviceBeuatyIds});
+};
+const getDictionary = async () => {
+    const response = await api.get<Dictionary[]>(`/dictionaries/classes`,);
+    return response.data;
+};
 export const apiService = {
     createService,
     getAllService,
@@ -193,6 +204,13 @@ export const apiService = {
     addEmployees,
     cancelAppointment,
     realizeAppointment,
-    getEmployeeByUserId, addAbsence, downloadReport ,assignService, getEmployeeById
+    getEmployeeByUserId,
+    addAbsence,
+    downloadReport,
+    assignService,
+    getEmployeeById,
+    addServiceBeuatyToEmployee,
+    removeServiceBeuatyFromEmployee,
+    getDictionary
 
 };
